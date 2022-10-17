@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:lightsaber/component/app_config.dart';
+import 'package:lightsaber/component/injector.dart';
 import 'package:lightsaber/data/dto/remote/people_dto.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,6 +12,9 @@ class PeopleRemoteDataSource {
 
   final http.Client client;
   final AppConfig appConfig;
+
+  factory PeopleRemoteDataSource.create() =>
+      PeopleRemoteDataSource(getIt.get(), getIt.get());
 
   Future<RemoteServerPeopleDto> getGroupOfPeople(
       [String pagination = '1']) async {
