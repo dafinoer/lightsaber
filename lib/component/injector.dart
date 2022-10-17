@@ -6,6 +6,7 @@ import 'package:lightsaber/data/repository/people_repository_impl.dart';
 
 import '../data/data_source/remote/species_remote_data_source.dart';
 import '../data/repository/species_repository_impl.dart';
+import '../domain/repository/species_repository.dart';
 
 final getIt = GetIt.instance;
 
@@ -19,7 +20,7 @@ class InjectorApp {
         () => SpeciesRemoteDataSource.create());
     getIt.registerFactory<PeopleRepositoryImpl>(
         () => PeopleRepositoryImpl.create());
-    getIt.registerFactory<SpeciesRepositoryImpl>(
+    getIt.registerFactory<SpeciesRepository>(
         () => SpeciesRepositoryImpl.create());
   }
 }
