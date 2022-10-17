@@ -11,10 +11,10 @@ abstract class _SpeciesStore with Store {
   final SpeciesRepository _speciesRepository;
 
   @observable
-  late ObservableList<Species> _observableList;
+  late ObservableList<Species> _observableList = ObservableList<Species>();
 
   @observable
-  late bool _isFullLoad;
+  late bool _isFullLoad = false;
 
   int _indexNow = 1;
 
@@ -24,10 +24,7 @@ abstract class _SpeciesStore with Store {
   @observable
   String? _errorMessage;
 
-  _SpeciesStore(this._speciesRepository) {
-    _observableList = ObservableList<Species>();
-    _isFullLoad = false;
-  }
+  _SpeciesStore(this._speciesRepository);
 
   @computed
   bool get isLoadingScreen => _isLoadingScreen;
@@ -43,13 +40,14 @@ abstract class _SpeciesStore with Store {
 
   @action
   Future onFetchSpecies() async {
-    _errorMessage = null;
-    if (species.isEmpty) _isLoadingScreen = true;
     try {
-      final species =
+      _errorMessage = null;
+      final groupSpecies =
           await _speciesRepository.getAllSpecies(_indexNow.toString());
-      if (species.result.isNotEmpty) _observableList.addAll(species.result);
-      checkNextContent(species.count);
+      if (groupSpecies.result.isNotEmpty) {
+        _observableList.addAll(groupSpecies.result);
+      }
+      checkNextContent(groupSpecies.count);
       _isLoadingScreen = false;
       _indexNow++;
     } catch (e) {
@@ -59,12 +57,19 @@ abstract class _SpeciesStore with Store {
   }
 
   void onPagination() {
-    onFetchSpecies();
+    if (!isFullLoad && !_isLoadingScreen) {
+      _isLoadingScreen = true;
+      onFetchSpecies();
+    }
   }
 
   void checkNextContent(int countTotal) {
-    final double progressPage = species.length / countTotal;
-    _isFullLoad = !(progressPage < 1.0);
+    if (species.length < countTotal) {
+      final double progressPage = species.length / countTotal;
+      _isFullLoad = !(progressPage < 1.0);
+    } else {
+      _isFullLoad = true;
+    }
   }
 
   @action
