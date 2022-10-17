@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static final light = ThemeData.light(useMaterial3: true).copyWith(
+  static final light = ThemeData.light().copyWith(
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 
