@@ -38,6 +38,7 @@ dependencies:
   json_annotation: ^4.7.0
   http: ^0.13.5
   get_it: ^7.2.0
+  random_avatar: ^0.0.7
 
 dev_dependencies:
   flutter_test:
