@@ -10,8 +10,8 @@ part 'routers.gr.dart';
 @AdaptiveAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: [
-    AutoRoute(path: '/', page: SplashScreenPage, initial: true),
-    AutoRoute(path: '/species', page: SpeciesScreenPage),
+    //AutoRoute(path: '/', page: SplashScreenPage, initial: true),
+    AutoRoute(path: '/species', page: SpeciesScreenPage, initial: true),
     AutoRoute(path: '/detail/:id', page: DetailScreenPage),
   ],
 )

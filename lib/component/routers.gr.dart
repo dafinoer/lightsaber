@@ -17,12 +17,6 @@ class _$RouterApp extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    SplashScreenRoute.name: (routeData) {
-      return AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const SplashScreenPage(),
-      );
-    },
     SpeciesScreenRoute.name: (routeData) {
       return AdaptivePage<dynamic>(
         routeData: routeData,
@@ -47,8 +41,10 @@ class _$RouterApp extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig(
-          SplashScreenRoute.name,
+          '/#redirect',
           path: '/',
+          redirectTo: '/species',
+          fullMatch: true,
         ),
         RouteConfig(
           SpeciesScreenRoute.name,
@@ -59,18 +55,6 @@ class _$RouterApp extends RootStackRouter {
           path: '/detail/:id',
         ),
       ];
-}
-
-/// generated route for
-/// [SplashScreenPage]
-class SplashScreenRoute extends PageRouteInfo<void> {
-  const SplashScreenRoute()
-      : super(
-          SplashScreenRoute.name,
-          path: '/',
-        );
-
-  static const String name = 'SplashScreenRoute';
 }
 
 /// generated route for
