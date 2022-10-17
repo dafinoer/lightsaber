@@ -3,9 +3,9 @@ class AppConfig {
 
   const AppConfig._({required this.baseUrl});
 
-  factory AppConfig.dev() => const AppConfig._(baseUrl: 'swapi.dev/api');
+  factory AppConfig.dev() => const AppConfig._(baseUrl: 'swapi.dev');
 
-  factory AppConfig.prod() => const AppConfig._(baseUrl: 'swapi.dev/api');
+  factory AppConfig.prod() => const AppConfig._(baseUrl: 'swapi.dev');
 
-  factory AppConfig.qa() => const AppConfig._(baseUrl: 'swapi.dev/api');
+  factory AppConfig.qa() => const AppConfig._(baseUrl: 'swapi.dev');
 }
