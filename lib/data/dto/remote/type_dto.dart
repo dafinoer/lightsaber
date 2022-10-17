@@ -9,7 +9,7 @@ class TypeDto {
   final String name;
   final String classification;
   final String designation;
-  final String height;
+  final String averageHeight;
 
   final String? skinColors;
   final String? hairColors;
@@ -27,7 +27,7 @@ class TypeDto {
     this.name,
     this.classification,
     this.designation,
-    this.height,
+    this.averageHeight,
     this.skinColors,
     this.hairColors,
     this.eyeColors,
@@ -47,7 +47,7 @@ class TypeDto {
     if (homeWorldId != null) homeWorld = '$homeWorldId';
     return Species(
       name,
-      int.tryParse(height) ?? 0,
+      int.tryParse(averageHeight) ?? 0,
       classification,
       homeWorldId: homeWorld,
     );
