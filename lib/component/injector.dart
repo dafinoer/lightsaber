@@ -9,16 +9,17 @@ import '../data/repository/species_repository_impl.dart';
 
 final getIt = GetIt.instance;
 
-void setup() {
-  getIt.registerLazySingleton<AppConfig>(() => AppConfig.dev());
-  getIt.registerSingleton<http.Client>(http.Client());
-
-  getIt.registerFactory<PeopleRemoteDataSource>(
-      () => PeopleRemoteDataSource.create());
-  getIt.registerFactory<SpeciesRemoteDataSource>(
-      () => SpeciesRemoteDataSource.create());
-  getIt.registerFactory<PeopleRepositoryImpl>(
-      () => PeopleRepositoryImpl.create());
-  getIt.registerFactory<SpeciesRepositoryImpl>(
-      () => SpeciesRepositoryImpl.create());
+class InjectorApp {
+  static void onRegisterObject() {
+    getIt.registerLazySingleton<AppConfig>(() => AppConfig.dev());
+    getIt.registerSingleton<http.Client>(http.Client());
+    getIt.registerFactory<PeopleRemoteDataSource>(
+        () => PeopleRemoteDataSource.create());
+    getIt.registerFactory<SpeciesRemoteDataSource>(
+        () => SpeciesRemoteDataSource.create());
+    getIt.registerFactory<PeopleRepositoryImpl>(
+        () => PeopleRepositoryImpl.create());
+    getIt.registerFactory<SpeciesRepositoryImpl>(
+        () => SpeciesRepositoryImpl.create());
+  }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lightsaber/component/app_theme.dart';
+import 'package:lightsaber/component/injector.dart';
 import 'package:sizer/sizer.dart';
 
 import 'component/routers.dart';
 
 void main() {
+  InjectorApp.onRegisterObject();
   runApp(const MyApp());
 }
 
