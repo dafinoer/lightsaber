@@ -5,7 +5,7 @@ class AppTheme {
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 
-  static final dark = ThemeData.dark(useMaterial3: true).copyWith(
+  static final dark = ThemeData.dark().copyWith(
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 }
