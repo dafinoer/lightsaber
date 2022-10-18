@@ -1,15 +1,13 @@
-import 'dart:collection';
-
 class Species {
   final String name;
   final String classification;
   final int averageHeight;
   final String? homeWorldId;
-  final UnmodifiableListView<String>? peopleIds;
+  final List<String>? peopleIds;
   final int? lifeSpan;
-  final UnmodifiableListView<String>? skinColors;
-  final UnmodifiableListView<String>? hairColors;
-  final UnmodifiableListView<String>? eyeColors;
+  final String? skinColors;
+  final String? hairColors;
+  final String? eyeColors;
 
   const Species(
     this.name,
