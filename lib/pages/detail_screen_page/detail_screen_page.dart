@@ -1,5 +1,4 @@
 import 'package:auto_route/annotations.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lightsaber/component/injector.dart';
@@ -33,6 +32,14 @@ class _DetailScreenPageState extends State<DetailScreenPage> {
     super.initState();
     _speciesDetailStore = SpeciesDetailStore(getIt.get());
     _speciesDetailStore.fetchRepository('${widget.idSpecies}');
+  }
+
+  @override
+  void didUpdateWidget(covariant DetailScreenPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if(oldWidget.idSpecies != widget.idSpecies){
+      _speciesDetailStore.fetchRepository('${widget.idSpecies}');
+    }
   }
 
   @override
