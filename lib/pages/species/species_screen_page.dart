@@ -71,6 +71,7 @@ class _SpeciesScreenPageState extends State<SpeciesScreenPage> {
           }
 
           return RefreshIndicator(
+            color: const Color(0xffFCB600),
             onRefresh: () async {
               _speciesStore.onRefresh();
               await asyncWhen(
@@ -85,7 +86,7 @@ class _SpeciesScreenPageState extends State<SpeciesScreenPage> {
                   return const Center(
                       child: Padding(
                     padding: EdgeInsets.only(bottom: 16.0),
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(color: Color(0xFFFCB600)),
                   ));
                 } else if (index == _speciesStore.species.length) {
                   return const SizedBox.shrink();
