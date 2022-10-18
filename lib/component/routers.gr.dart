@@ -13,7 +13,12 @@
 part of 'routers.dart';
 
 class _$RouterApp extends RootStackRouter {
-  _$RouterApp([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
+  _$RouterApp({
+    GlobalKey<NavigatorState>? navigatorKey,
+    required this.splashScreenGuard,
+  }) : super(navigatorKey);
+
+  final SplashScreenGuard splashScreenGuard;
 
   @override
   final Map<String, PageFactory> pagesMap = {
@@ -54,6 +59,7 @@ class _$RouterApp extends RootStackRouter {
         RouteConfig(
           SplashScreenRoute.name,
           path: '/',
+          guards: [splashScreenGuard],
         ),
         RouteConfig(
           SpeciesScreenRoute.name,
