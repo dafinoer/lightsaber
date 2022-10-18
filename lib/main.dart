@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, deviceType) => MaterialApp.router(
         title: 'LightSaber Demo',
-        theme: AppTheme.light,
+        theme: AppTheme.dark,
         routerDelegate: appRoute.delegate(),
         routeInformationParser: appRoute.defaultRouteParser(),
       ),
