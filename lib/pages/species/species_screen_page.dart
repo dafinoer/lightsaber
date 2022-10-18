@@ -1,11 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lightsaber/component/injector.dart';
-import 'package:lightsaber/component/routers.dart';
+import 'package:lightsaber/pages/species/main_screen_page.dart';
 import 'package:lightsaber/presentation/species/species_store.dart';
 import 'package:mobx/mobx.dart';
-import 'package:random_avatar/random_avatar.dart';
+
+import 'component/card_item_list.dart';
 
 class SpeciesScreenPage extends StatefulWidget {
   const SpeciesScreenPage({
@@ -64,58 +64,48 @@ class _SpeciesScreenPageState extends State<SpeciesScreenPage> {
       appBar: AppBar(
         title: const Text('Star Wars'),
       ),
-      body: SizedBox.expand(child: Observer(
-        builder: (context) {
-          if (_speciesStore.isFullLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          return RefreshIndicator(
-            color: const Color(0xffFCB600),
-            onRefresh: () async {
-              _speciesStore.onRefresh();
-              await asyncWhen(
-                  (p0) => _speciesStore.fetchStatus != FutureStatus.pending);
+      body: SizedBox.expand(
+        child: MainScreenPage(
+          item: Observer(
+            builder: (context) {
+              if (_speciesStore.isFullLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return RefreshIndicator(
+                color: const Color(0xffFCB600),
+                onRefresh: () async {
+                  _speciesStore.onRefresh();
+                  await asyncWhen((p0) =>
+                      _speciesStore.fetchStatus != FutureStatus.pending);
+                },
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _speciesStore.species.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == _speciesStore.species.length &&
+                        !_speciesStore.isFullLoad) {
+                      return const Center(
+                          child: Padding(
+                        padding: EdgeInsets.only(bottom: 16.0),
+                        child:
+                            CircularProgressIndicator(color: Color(0xFFFCB600)),
+                      ));
+                    } else if (index == _speciesStore.species.length) {
+                      return const SizedBox.shrink();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 4),
+                      child: CardItemList(
+                          index: index, speciesStore: _speciesStore),
+                    );
+                  },
+                ),
+              );
             },
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: _speciesStore.species.length + 1,
-              itemBuilder: (context, index) {
-                if (index == _speciesStore.species.length &&
-                    !_speciesStore.isFullLoad) {
-                  return const Center(
-                      child: Padding(
-                    padding: EdgeInsets.only(bottom: 16.0),
-                    child: CircularProgressIndicator(color: Color(0xFFFCB600)),
-                  ));
-                } else if (index == _speciesStore.species.length) {
-                  return const SizedBox.shrink();
-                }
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4),
-                  child: Card(
-                    child: ListTile(
-                      leading: CircleAvatar(
-                          child: randomAvatar(index.toString(),
-                              fit: BoxFit.cover, cacheColorFilter: true)),
-                      title: Text(_speciesStore.species[index].name),
-                      subtitle:
-                          Text(_speciesStore.species[index].classification),
-                      onTap: () =>
-                          AutoRouter.of(context).push(DetailScreenRoute(
-                        idSpecies: index + 1,
-                        idAvatar: index.toString(),
-                        name: _speciesStore.species[index].name,
-                      )),
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      )),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lightsaber/pages/species/species_screen_page.dart';
 
@@ -13,13 +12,27 @@ part 'routers.gr.dart';
   replaceInRouteName: 'Page,Route',
   routes: [
     AutoRoute(
-        path: '/',
-        page: SplashScreenPage,
-        initial: true,
-        guards: [SplashScreenGuard]),
-    AutoRoute(path: '/species', page: SpeciesScreenPage, initial: true),
+      path: '/',
+      page: SplashScreenPage,
+      initial: true,
+      guards: [SplashScreenGuard],
+    ),
     AutoRoute(
-        path: '/detail-species/:id/:name/:idAvatar', page: DetailScreenPage),
+      path: '/species',
+      page: SpeciesScreenPage,
+      children: [
+        AutoRoute(
+          name: 'DetailDesktop',
+          path: 'detail-species/:id/:name/:idAvatar',
+          page: DetailScreenPage,
+        )
+      ],
+    ),
+    AutoRoute(
+      name: 'DetailDevice',
+      path: '/detail-species/:id/:name/:idAvatar',
+      page: DetailScreenPage,
+    ),
   ],
 )
 class RouterApp extends _$RouterApp {
@@ -35,10 +48,10 @@ class RouterApp extends _$RouterApp {
 class SplashScreenGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    if (Platform.isAndroid || Platform.isIOS || Platform.isFuchsia) {
-      resolver.next(true);
+    if (kIsWeb) {
+      router.navigate(const SpeciesScreenRoute());
     } else {
-      router.replace(const SpeciesScreenRoute());
+      resolver.next(true);
     }
   }
 }

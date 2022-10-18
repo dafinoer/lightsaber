@@ -34,10 +34,28 @@ class _$RouterApp extends RootStackRouter {
         child: const SpeciesScreenPage(),
       );
     },
-    DetailScreenRoute.name: (routeData) {
+    DetailDevice.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<DetailScreenRouteArgs>(
-          orElse: () => DetailScreenRouteArgs(
+      final args = routeData.argsAs<DetailDeviceArgs>(
+          orElse: () => DetailDeviceArgs(
+                idSpecies: pathParams.getInt('id'),
+                idAvatar: pathParams.getString('idAvatar'),
+                name: pathParams.getString('name'),
+              ));
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: DetailScreenPage(
+          key: args.key,
+          idSpecies: args.idSpecies,
+          idAvatar: args.idAvatar,
+          name: args.name,
+        ),
+      );
+    },
+    DetailDesktop.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<DetailDesktopArgs>(
+          orElse: () => DetailDesktopArgs(
                 idSpecies: pathParams.getInt('id'),
                 idAvatar: pathParams.getString('idAvatar'),
                 name: pathParams.getString('name'),
@@ -64,9 +82,16 @@ class _$RouterApp extends RootStackRouter {
         RouteConfig(
           SpeciesScreenRoute.name,
           path: '/species',
+          children: [
+            RouteConfig(
+              DetailDesktop.name,
+              path: 'detail-species/:id/:name/:idAvatar',
+              parent: SpeciesScreenRoute.name,
+            )
+          ],
         ),
         RouteConfig(
-          DetailScreenRoute.name,
+          DetailDevice.name,
           path: '/detail-species/:id/:name/:idAvatar',
         ),
       ];
@@ -87,10 +112,11 @@ class SplashScreenRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [SpeciesScreenPage]
 class SpeciesScreenRoute extends PageRouteInfo<void> {
-  const SpeciesScreenRoute()
+  const SpeciesScreenRoute({List<PageRouteInfo>? children})
       : super(
           SpeciesScreenRoute.name,
           path: '/species',
+          initialChildren: children,
         );
 
   static const String name = 'SpeciesScreenRoute';
@@ -98,16 +124,16 @@ class SpeciesScreenRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [DetailScreenPage]
-class DetailScreenRoute extends PageRouteInfo<DetailScreenRouteArgs> {
-  DetailScreenRoute({
+class DetailDevice extends PageRouteInfo<DetailDeviceArgs> {
+  DetailDevice({
     Key? key,
     required int idSpecies,
     required String idAvatar,
     required String name,
   }) : super(
-          DetailScreenRoute.name,
+          DetailDevice.name,
           path: '/detail-species/:id/:name/:idAvatar',
-          args: DetailScreenRouteArgs(
+          args: DetailDeviceArgs(
             key: key,
             idSpecies: idSpecies,
             idAvatar: idAvatar,
@@ -120,11 +146,11 @@ class DetailScreenRoute extends PageRouteInfo<DetailScreenRouteArgs> {
           },
         );
 
-  static const String name = 'DetailScreenRoute';
+  static const String name = 'DetailDevice';
 }
 
-class DetailScreenRouteArgs {
-  const DetailScreenRouteArgs({
+class DetailDeviceArgs {
+  const DetailDeviceArgs({
     this.key,
     required this.idSpecies,
     required this.idAvatar,
@@ -141,6 +167,55 @@ class DetailScreenRouteArgs {
 
   @override
   String toString() {
-    return 'DetailScreenRouteArgs{key: $key, idSpecies: $idSpecies, idAvatar: $idAvatar, name: $name}';
+    return 'DetailDeviceArgs{key: $key, idSpecies: $idSpecies, idAvatar: $idAvatar, name: $name}';
+  }
+}
+
+/// generated route for
+/// [DetailScreenPage]
+class DetailDesktop extends PageRouteInfo<DetailDesktopArgs> {
+  DetailDesktop({
+    Key? key,
+    required int idSpecies,
+    required String idAvatar,
+    required String name,
+  }) : super(
+          DetailDesktop.name,
+          path: 'detail-species/:id/:name/:idAvatar',
+          args: DetailDesktopArgs(
+            key: key,
+            idSpecies: idSpecies,
+            idAvatar: idAvatar,
+            name: name,
+          ),
+          rawPathParams: {
+            'id': idSpecies,
+            'idAvatar': idAvatar,
+            'name': name,
+          },
+        );
+
+  static const String name = 'DetailDesktop';
+}
+
+class DetailDesktopArgs {
+  const DetailDesktopArgs({
+    this.key,
+    required this.idSpecies,
+    required this.idAvatar,
+    required this.name,
+  });
+
+  final Key? key;
+
+  final int idSpecies;
+
+  final String idAvatar;
+
+  final String name;
+
+  @override
+  String toString() {
+    return 'DetailDesktopArgs{key: $key, idSpecies: $idSpecies, idAvatar: $idAvatar, name: $name}';
   }
 }
