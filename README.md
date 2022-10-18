@@ -2,6 +2,16 @@
 
 May the 4th be with you
 
+## Platform
+- Android
+- Web
+
+## How to run for web
+`fvm flutter run -d chrome`
+
+## How to run for mobile
+`fvm flutter run lib/main.dart`
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
