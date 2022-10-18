@@ -50,6 +50,9 @@ class TypeDto {
       int.tryParse(averageHeight) ?? 0,
       classification,
       homeWorldId: homeWorld,
+      eyeColors: eyeColors,
+      hairColors: hairColors,
+      skinColors: skinColors,
     );
   }
 }
