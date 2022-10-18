@@ -17,6 +17,12 @@ class _$RouterApp extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    SplashScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const SplashScreenPage(),
+      );
+    },
     SpeciesScreenRoute.name: (routeData) {
       return AdaptivePage<dynamic>(
         routeData: routeData,
@@ -26,13 +32,18 @@ class _$RouterApp extends RootStackRouter {
     DetailScreenRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<DetailScreenRouteArgs>(
-          orElse: () =>
-              DetailScreenRouteArgs(idSpecies: pathParams.getInt('id')));
+          orElse: () => DetailScreenRouteArgs(
+                idSpecies: pathParams.getInt('id'),
+                idAvatar: pathParams.getString('idAvatar'),
+                name: pathParams.getString('name'),
+              ));
       return AdaptivePage<dynamic>(
         routeData: routeData,
         child: DetailScreenPage(
           key: args.key,
           idSpecies: args.idSpecies,
+          idAvatar: args.idAvatar,
+          name: args.name,
         ),
       );
     },
@@ -41,10 +52,8 @@ class _$RouterApp extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig(
-          '/#redirect',
+          SplashScreenRoute.name,
           path: '/',
-          redirectTo: '/species',
-          fullMatch: true,
         ),
         RouteConfig(
           SpeciesScreenRoute.name,
@@ -52,9 +61,21 @@ class _$RouterApp extends RootStackRouter {
         ),
         RouteConfig(
           DetailScreenRoute.name,
-          path: '/detail/:id',
+          path: '/detail-species/:id/:name/:idAvatar',
         ),
       ];
+}
+
+/// generated route for
+/// [SplashScreenPage]
+class SplashScreenRoute extends PageRouteInfo<void> {
+  const SplashScreenRoute()
+      : super(
+          SplashScreenRoute.name,
+          path: '/',
+        );
+
+  static const String name = 'SplashScreenRoute';
 }
 
 /// generated route for
@@ -75,14 +96,22 @@ class DetailScreenRoute extends PageRouteInfo<DetailScreenRouteArgs> {
   DetailScreenRoute({
     Key? key,
     required int idSpecies,
+    required String idAvatar,
+    required String name,
   }) : super(
           DetailScreenRoute.name,
-          path: '/detail/:id',
+          path: '/detail-species/:id/:name/:idAvatar',
           args: DetailScreenRouteArgs(
             key: key,
             idSpecies: idSpecies,
+            idAvatar: idAvatar,
+            name: name,
           ),
-          rawPathParams: {'id': idSpecies},
+          rawPathParams: {
+            'id': idSpecies,
+            'idAvatar': idAvatar,
+            'name': name,
+          },
         );
 
   static const String name = 'DetailScreenRoute';
@@ -92,14 +121,20 @@ class DetailScreenRouteArgs {
   const DetailScreenRouteArgs({
     this.key,
     required this.idSpecies,
+    required this.idAvatar,
+    required this.name,
   });
 
   final Key? key;
 
   final int idSpecies;
 
+  final String idAvatar;
+
+  final String name;
+
   @override
   String toString() {
-    return 'DetailScreenRouteArgs{key: $key, idSpecies: $idSpecies}';
+    return 'DetailScreenRouteArgs{key: $key, idSpecies: $idSpecies, idAvatar: $idAvatar, name: $name}';
   }
 }
