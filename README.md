@@ -6,6 +6,9 @@ May the 4th be with you
 - Android
 - Web
 
+<img src="https://github.com/dafinoer/lightsaber/blob/main/screen_capture/mobile.jpg" width="275" height="550" />
+<img src="https://github.com/dafinoer/lightsaber/blob/main/screen_capture/web.jpg" width="640" height="360" />
+
 ## How to run for web
 `fvm flutter run -d chrome`
 
