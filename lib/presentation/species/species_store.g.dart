@@ -9,12 +9,12 @@ part of 'species_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SpeciesStore on _SpeciesStore, Store {
-  Computed<bool>? _$isLoadingScreenComputed;
+  Computed<bool>? _$isScrollEndComputed;
 
   @override
-  bool get isLoadingScreen =>
-      (_$isLoadingScreenComputed ??= Computed<bool>(() => super.isLoadingScreen,
-              name: '_SpeciesStore.isLoadingScreen'))
+  bool get isScrollEnd =>
+      (_$isScrollEndComputed ??= Computed<bool>(() => super.isScrollEnd,
+              name: '_SpeciesStore.isScrollEnd'))
           .value;
   Computed<List<Species>>? _$speciesComputed;
 
@@ -23,19 +23,33 @@ mixin _$SpeciesStore on _SpeciesStore, Store {
       (_$speciesComputed ??= Computed<List<Species>>(() => super.species,
               name: '_SpeciesStore.species'))
           .value;
-  Computed<bool>? _$isFullLoadComputed;
-
-  @override
-  bool get isFullLoad =>
-      (_$isFullLoadComputed ??= Computed<bool>(() => super.isFullLoad,
-              name: '_SpeciesStore.isFullLoad'))
-          .value;
   Computed<String?>? _$errorMessageComputed;
 
   @override
   String? get errorMessage =>
       (_$errorMessageComputed ??= Computed<String?>(() => super.errorMessage,
               name: '_SpeciesStore.errorMessage'))
+          .value;
+  Computed<FutureStatus>? _$fetchStatusComputed;
+
+  @override
+  FutureStatus get fetchStatus =>
+      (_$fetchStatusComputed ??= Computed<FutureStatus>(() => super.fetchStatus,
+              name: '_SpeciesStore.fetchStatus'))
+          .value;
+  Computed<Group<Species>?>? _$fetchSpeciesValueComputed;
+
+  @override
+  Group<Species>? get fetchSpeciesValue => (_$fetchSpeciesValueComputed ??=
+          Computed<Group<Species>?>(() => super.fetchSpeciesValue,
+              name: '_SpeciesStore.fetchSpeciesValue'))
+      .value;
+  Computed<bool>? _$isFullLoadingComputed;
+
+  @override
+  bool get isFullLoading =>
+      (_$isFullLoadingComputed ??= Computed<bool>(() => super.isFullLoading,
+              name: '_SpeciesStore.isFullLoading'))
           .value;
 
   late final _$_observableListAtom =
@@ -54,35 +68,35 @@ mixin _$SpeciesStore on _SpeciesStore, Store {
     });
   }
 
-  late final _$_isFullLoadAtom =
-      Atom(name: '_SpeciesStore._isFullLoad', context: context);
+  late final _$_fetchSpeciesAtom =
+      Atom(name: '_SpeciesStore._fetchSpecies', context: context);
 
   @override
-  bool get _isFullLoad {
-    _$_isFullLoadAtom.reportRead();
-    return super._isFullLoad;
+  ObservableFuture<Group<Species>?> get _fetchSpecies {
+    _$_fetchSpeciesAtom.reportRead();
+    return super._fetchSpecies;
   }
 
   @override
-  set _isFullLoad(bool value) {
-    _$_isFullLoadAtom.reportWrite(value, super._isFullLoad, () {
-      super._isFullLoad = value;
+  set _fetchSpecies(ObservableFuture<Group<Species>?> value) {
+    _$_fetchSpeciesAtom.reportWrite(value, super._fetchSpecies, () {
+      super._fetchSpecies = value;
     });
   }
 
-  late final _$_isLoadingScreenAtom =
-      Atom(name: '_SpeciesStore._isLoadingScreen', context: context);
+  late final _$_isScrollEndAtom =
+      Atom(name: '_SpeciesStore._isScrollEnd', context: context);
 
   @override
-  bool get _isLoadingScreen {
-    _$_isLoadingScreenAtom.reportRead();
-    return super._isLoadingScreen;
+  bool get _isScrollEnd {
+    _$_isScrollEndAtom.reportRead();
+    return super._isScrollEnd;
   }
 
   @override
-  set _isLoadingScreen(bool value) {
-    _$_isLoadingScreenAtom.reportWrite(value, super._isLoadingScreen, () {
-      super._isLoadingScreen = value;
+  set _isScrollEnd(bool value) {
+    _$_isScrollEndAtom.reportWrite(value, super._isScrollEnd, () {
+      super._isScrollEnd = value;
     });
   }
 
@@ -102,16 +116,28 @@ mixin _$SpeciesStore on _SpeciesStore, Store {
     });
   }
 
-  late final _$onFetchSpeciesAsyncAction =
-      AsyncAction('_SpeciesStore.onFetchSpecies', context: context);
+  late final _$fetchSpeciesRepositoryAsyncAction =
+      AsyncAction('_SpeciesStore.fetchSpeciesRepository', context: context);
 
   @override
-  Future<dynamic> onFetchSpecies() {
-    return _$onFetchSpeciesAsyncAction.run(() => super.onFetchSpecies());
+  Future<Group<Species>> fetchSpeciesRepository() {
+    return _$fetchSpeciesRepositoryAsyncAction
+        .run(() => super.fetchSpeciesRepository());
   }
 
   late final _$_SpeciesStoreActionController =
       ActionController(name: '_SpeciesStore', context: context);
+
+  @override
+  void onAddObservable(Group<Species> group) {
+    final _$actionInfo = _$_SpeciesStoreActionController.startAction(
+        name: '_SpeciesStore.onAddObservable');
+    try {
+      return super.onAddObservable(group);
+    } finally {
+      _$_SpeciesStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void onRefresh() {
@@ -125,11 +151,11 @@ mixin _$SpeciesStore on _SpeciesStore, Store {
   }
 
   @override
-  void _onError(String error) {
+  void onError(String error) {
     final _$actionInfo = _$_SpeciesStoreActionController.startAction(
-        name: '_SpeciesStore._onError');
+        name: '_SpeciesStore.onError');
     try {
-      return super._onError(error);
+      return super.onError(error);
     } finally {
       _$_SpeciesStoreActionController.endAction(_$actionInfo);
     }
@@ -138,10 +164,12 @@ mixin _$SpeciesStore on _SpeciesStore, Store {
   @override
   String toString() {
     return '''
-isLoadingScreen: ${isLoadingScreen},
+isScrollEnd: ${isScrollEnd},
 species: ${species},
-isFullLoad: ${isFullLoad},
-errorMessage: ${errorMessage}
+errorMessage: ${errorMessage},
+fetchStatus: ${fetchStatus},
+fetchSpeciesValue: ${fetchSpeciesValue},
+isFullLoading: ${isFullLoading}
     ''';
   }
 }

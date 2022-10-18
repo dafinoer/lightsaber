@@ -1,3 +1,4 @@
+import 'package:lightsaber/domain/models/group.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../domain/models/species.dart';
@@ -10,77 +11,90 @@ class SpeciesStore = _SpeciesStore with _$SpeciesStore;
 abstract class _SpeciesStore with Store {
   final SpeciesRepository _speciesRepository;
 
+  int _indexNow = 1;
+
+  int _totalItem = 0;
+
+  bool _isFullLoad = false;
+
+  _SpeciesStore(this._speciesRepository);
+
   @observable
   late ObservableList<Species> _observableList = ObservableList<Species>();
 
   @observable
-  late bool _isFullLoad = false;
-
-  int _indexNow = 1;
+  ObservableFuture<Group<Species>?> _fetchSpecies =
+      ObservableFuture.value(null);
 
   @observable
-  bool _isLoadingScreen = false;
+  bool _isScrollEnd = false;
+
+  bool _isRefresh = false;
 
   @observable
   String? _errorMessage;
 
-  _SpeciesStore(this._speciesRepository);
+  bool get isFullLoad => _isFullLoad;
 
   @computed
-  bool get isLoadingScreen => _isLoadingScreen;
+  bool get isScrollEnd => _isScrollEnd;
 
   @computed
   List<Species> get species => _observableList;
 
   @computed
-  bool get isFullLoad => _isFullLoad;
-
-  @computed
   String? get errorMessage => _errorMessage;
 
+  @computed
+  FutureStatus get fetchStatus => _fetchSpecies.status;
+
+  @computed
+  Group<Species>? get fetchSpeciesValue => _fetchSpecies.value;
+
+  @computed
+  bool get isFullLoading {
+    return fetchStatus == FutureStatus.pending && species.isEmpty;
+  }
+
   @action
-  Future onFetchSpecies() async {
-    try {
-      _errorMessage = null;
-      final groupSpecies =
-          await _speciesRepository.getAllSpecies(_indexNow.toString());
-      if (groupSpecies.result.isNotEmpty) {
-        _observableList.addAll(groupSpecies.result);
+  Future<Group<Species>> fetchSpeciesRepository() async {
+    final future = _speciesRepository.getAllSpecies(_indexNow.toString());
+    _fetchSpecies = ObservableFuture(future);
+    return future;
+  }
+
+  @action
+  void onAddObservable(Group<Species> group) {
+    _totalItem = group.count;
+    if (group.result.isNotEmpty) {
+      if (_isRefresh) {
+        _observableList = ObservableList<Species>()..addAll(group.result);
+        _isRefresh = false;
+      } else {
+        _observableList.addAll(group.result);
       }
-      checkNextContent(groupSpecies.count);
-      _isLoadingScreen = false;
-      _indexNow++;
-    } catch (e) {
-      _onError('oops something wrong');
     }
-    return null;
+    _indexNow++;
+    _isScrollEnd = false;
+    _isFullLoad = !(species.length < _totalItem);
   }
 
-  void onPagination() {
-    if (!isFullLoad && !_isLoadingScreen) {
-      _isLoadingScreen = true;
-      onFetchSpecies();
-    }
-  }
-
-  void checkNextContent(int countTotal) {
-    if (species.length < countTotal) {
-      final double progressPage = species.length / countTotal;
-      _isFullLoad = !(progressPage < 1.0);
-    } else {
-      _isFullLoad = true;
+  void checkNextContent() {
+    if (fetchStatus != FutureStatus.pending && !_isFullLoad) {
+      fetchSpeciesRepository();
     }
   }
 
   @action
   void onRefresh() {
-    _isLoadingScreen = false;
+    _isRefresh = true;
     _isFullLoad = false;
     _indexNow = 1;
+    fetchSpeciesRepository();
   }
 
   @action
-  void _onError(String error) {
+  void onError(String error) {
     _errorMessage = error;
   }
 }
