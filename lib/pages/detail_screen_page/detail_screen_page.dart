@@ -52,7 +52,10 @@ class _DetailScreenPageState extends State<DetailScreenPage> {
               switch (_speciesDetailStore.speciesFutureStatus) {
                 case FutureStatus.pending:
                   return const SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()));
+                      child: Center(
+                          child: CircularProgressIndicator(
+                    color: Color(0xffFCB600),
+                  )));
                 case FutureStatus.fulfilled:
                   if (_speciesDetailStore.speciesObject != null) {
                     return ListItem(
