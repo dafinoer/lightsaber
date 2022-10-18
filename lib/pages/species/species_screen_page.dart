@@ -37,7 +37,7 @@ class _SpeciesScreenPageState extends State<SpeciesScreenPage> {
     });
 
     reaction((p0) => _speciesStore.fetchStatus, (p0) {
-      if(_speciesStore.fetchStatus == FutureStatus.fulfilled) {
+      if (_speciesStore.fetchStatus == FutureStatus.fulfilled) {
         final group = _speciesStore.fetchSpeciesValue;
         if (group != null) _speciesStore.onAddObservable(group);
       }
@@ -101,8 +101,12 @@ class _SpeciesScreenPageState extends State<SpeciesScreenPage> {
                       title: Text(_speciesStore.species[index].name),
                       subtitle:
                           Text(_speciesStore.species[index].classification),
-                      onTap: () => AutoRouter.of(context)
-                          .push(DetailScreenRoute(idSpecies: index + 1)),
+                      onTap: () =>
+                          AutoRouter.of(context).push(DetailScreenRoute(
+                        idSpecies: index + 1,
+                        idAvatar: index.toString(),
+                        name: _speciesStore.species[index].name,
+                      )),
                     ),
                   ),
                 );
