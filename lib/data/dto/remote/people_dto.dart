@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lightsaber/domain/models/people.dart';
 import 'package:lightsaber/extensions/strings_extension.dart';
