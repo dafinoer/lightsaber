@@ -38,8 +38,7 @@ class _SpeciesScreenPageState extends State<SpeciesScreenPage> {
 
     reaction((p0) => _speciesStore.fetchStatus, (p0) {
       if (_speciesStore.fetchStatus == FutureStatus.fulfilled) {
-        final group = _speciesStore.fetchSpeciesValue;
-        if (group != null) _speciesStore.onAddObservable(group);
+        _speciesStore.onAddObservable();
       }
     });
 

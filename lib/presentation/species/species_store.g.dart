@@ -120,7 +120,7 @@ mixin _$SpeciesStore on _SpeciesStore, Store {
       AsyncAction('_SpeciesStore.fetchSpeciesRepository', context: context);
 
   @override
-  Future<Group<Species>> fetchSpeciesRepository() {
+  Future<void> fetchSpeciesRepository() {
     return _$fetchSpeciesRepositoryAsyncAction
         .run(() => super.fetchSpeciesRepository());
   }
@@ -129,11 +129,11 @@ mixin _$SpeciesStore on _SpeciesStore, Store {
       ActionController(name: '_SpeciesStore', context: context);
 
   @override
-  void onAddObservable(Group<Species> group) {
+  void onAddObservable() {
     final _$actionInfo = _$_SpeciesStoreActionController.startAction(
         name: '_SpeciesStore.onAddObservable');
     try {
-      return super.onAddObservable(group);
+      return super.onAddObservable();
     } finally {
       _$_SpeciesStoreActionController.endAction(_$actionInfo);
     }

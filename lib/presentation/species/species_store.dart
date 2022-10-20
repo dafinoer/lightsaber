@@ -17,6 +17,8 @@ abstract class _SpeciesStore with Store {
 
   bool _isFullLoad = false;
 
+  Group<Species>? _groupOfSpecies;
+
   _SpeciesStore(this._speciesRepository);
 
   @observable
@@ -57,24 +59,27 @@ abstract class _SpeciesStore with Store {
   }
 
   @action
-  Future<Group<Species>> fetchSpeciesRepository() async {
+  Future<void> fetchSpeciesRepository() async {
+    _groupOfSpecies = null;
     final future = _speciesRepository.getAllSpecies(_indexNow.toString());
     _fetchSpecies = ObservableFuture(future);
-    return future;
+    _groupOfSpecies = await future;
+    return;
   }
 
   @action
-  void onAddObservable(Group<Species> group) {
-    _totalItem = group.count;
-    if (group.result.isNotEmpty) {
+  void onAddObservable() {
+    final groupOfSpecies = _groupOfSpecies;
+    if (groupOfSpecies != null && groupOfSpecies.result.isNotEmpty) {
+      _totalItem = groupOfSpecies.count;
       if (_isRefresh) {
-        _observableList = ObservableList<Species>()..addAll(group.result);
-        _isRefresh = false;
+        _onNewInitializedObservableList(groupOfSpecies);
       } else {
-        _observableList.addAll(group.result);
+        _observableList.addAll(groupOfSpecies.result);
       }
+      _indexNow += 1;
     }
-    _indexNow++;
+    _isRefresh = false;
     _isScrollEnd = false;
     _isFullLoad = !(species.length < _totalItem);
   }
@@ -83,6 +88,10 @@ abstract class _SpeciesStore with Store {
     if (fetchStatus != FutureStatus.pending && !_isFullLoad) {
       fetchSpeciesRepository();
     }
+  }
+
+  void _onNewInitializedObservableList(Group<Species> species) {
+    _observableList = ObservableList<Species>()..addAll(species.result);
   }
 
   @action
