@@ -12,4 +12,7 @@ class Group<T> {
         other.count == count &&
         other.result == other.result;
   }
+
+  @override
+  int get hashCode => Object.hash(count, result);
 }
